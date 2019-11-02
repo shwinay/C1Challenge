@@ -60,7 +60,8 @@ function getAllQuestions(category, difficulty, startDate, endDate, res) {
             }
         }
         res.json({
-            questions: questions
+            questions: questions,
+            categories: categories.length
         });
     });
 }
