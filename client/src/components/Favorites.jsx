@@ -31,6 +31,7 @@ class Favorites extends Component {
 
     componentDidMount() {
         this.getCards();
+        setInterval(() => {this.getCards()}, 100);
     }
 
     render() {
@@ -42,6 +43,7 @@ class Favorites extends Component {
     }
 
     getCards() {
+        this.setState({cardsList: []});
         let favorites = localStorage.getItem("favorites");
         if (favorites == null) return; //no favorites in local storage
         let favoritesJSON = JSON.parse(favorites);
@@ -49,17 +51,18 @@ class Favorites extends Component {
         let questionList = favoritesJSON.questions;
         for (let i = 0; i < questionList.length; i ++) {
             let currElement = questionList[i];
-            this.state.cards.push(
+            this.state.cardsList.push(
                 <ContentCard
                 question={currElement.question}
                 answer={currElement.answer}
                 category={currElement.category}
-                airdate={currElement.airdate}
+                airdate={new Date(currElement.airdate)}
                 difficulty={currElement.difficulty}
                 favorited={true}
                 />
             );
         }
+        this.setState({});
     }
 
     getGrid() {
@@ -77,7 +80,7 @@ class Favorites extends Component {
             }
             currRow.push(
                 <div className="col m-2">
-                    {this.state.cardList[i]}
+                    {this.state.cardsList[i]}
                 </div>
             );
         }

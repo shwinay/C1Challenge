@@ -89,41 +89,44 @@ class ContentCard extends Component {
 
     //removes the current card from local storage
     unfavoriteLocalStorage() {
-
+        let favorites = localStorage.getItem("favorites");
+        console.log(localStorage);
+        let favoritesJSON = {
+            questions: []
+        };
+        if (favorites != null) favoritesJSON = JSON.parse(favorites);
+        console.log(favoritesJSON);
+        let questionList = favoritesJSON.questions;
+        for (let i = 0; i < questionList.length; i ++) {
+            if (questionList[i].question == this.props.question) {
+                questionList.splice(i, 1);
+                break;
+            }
+        }
+        favoritesJSON.questions = questionList;
+        localStorage.setItem("favorites", JSON.stringify(favoritesJSON));
     }
 
     //puts the current card in local storage
     favoriteLocalStorage() {
-        console.log(localStorage);
+        
         let favorites = localStorage.getItem("favorites");
-        let favoritesJSON = {};
+        console.log(localStorage);
+        let favoritesJSON = {
+            questions: []
+        };
         if (favorites != null) favoritesJSON = JSON.parse(favorites);
         console.log(favoritesJSON);
-        // if (favoritesJSON.hasOwnProperty("questions")) {
-        //     let questionList = favoritesJSON.questions;
-        //     questionList.push({
-        //         category: this.props.category,
-        //         difficulty: this.props.difficulty,
-        //         airdate: this.props.airdate,
-        //         answer: this.props.answer,
-        //         question: this.props.question
-        //     });
-        //     favoritesJSON.questions = questionList;
-        //     localStorage.setItem("questions", JSON.stringify(favoritesJSON.questions));
-        // }
-        // else {
-        //     let questionList = [];
-        //     questionList.push({
-        //         category: this.props.category,
-        //         difficulty: this.props.difficulty,
-        //         airdate: this.props.airdate,
-        //         answer: this.props.answer,
-        //         question: this.props.question
-        //     });
-        //     favoritesJSON.questions = questionList;
-        //     localStorage.setItem("favorites", JSON.stringify(favoritesJSON));
-        // }
-        // console.log(localStorage.getItem("favorites"));
+        let questionList = favoritesJSON.questions;
+        questionList.push({
+            category: this.props.category,
+            difficulty: this.props.difficulty,
+            airdate: this.props.airdate,
+            answer: this.props.answer,
+            question: this.props.question
+        });
+        favoritesJSON.questions = questionList;
+        localStorage.setItem("favorites", JSON.stringify(favoritesJSON));
     }
 
     //converts date to MM/DD/YYYY string
