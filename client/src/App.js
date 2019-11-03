@@ -18,7 +18,6 @@ class App extends Component {
       <React.Fragment>
         <Navbar changePage={this.changePage}/>
         {this.getPage()}
-        <ContentCard question="question" answer="answer" airdate={new Date()} difficulty="400" category="test category" favorited={false}/>
       </React.Fragment>
     )
   }
