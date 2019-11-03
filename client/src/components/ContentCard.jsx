@@ -90,12 +90,12 @@ class ContentCard extends Component {
     //removes the current card from local storage
     unfavoriteLocalStorage() {
         let favorites = localStorage.getItem("favorites");
-        console.log(localStorage);
+        //console.log(localStorage);
         let favoritesJSON = {
             questions: []
         };
         if (favorites != null) favoritesJSON = JSON.parse(favorites);
-        console.log(favoritesJSON);
+        //console.log(favoritesJSON);
         let questionList = favoritesJSON.questions;
         for (let i = 0; i < questionList.length; i ++) {
             if (questionList[i].question == this.props.question) {
@@ -111,12 +111,12 @@ class ContentCard extends Component {
     favoriteLocalStorage() {
         
         let favorites = localStorage.getItem("favorites");
-        console.log(localStorage);
+        //console.log(localStorage);
         let favoritesJSON = {
             questions: []
         };
         if (favorites != null) favoritesJSON = JSON.parse(favorites);
-        console.log(favoritesJSON);
+        //console.log(favoritesJSON);
         let questionList = favoritesJSON.questions;
         questionList.push({
             category: this.props.category,

@@ -52,16 +52,43 @@ class ContentGrid extends Component {
             let questionList = data.questions;
             for (let i = 0; i < questionList.length; i ++) {
                 let currQuestion = questionList[i];
-                this.state.cardList.push(
-                    <ContentCard
-                        question={currQuestion.question}
-                        answer={currQuestion.answer}
-                        category={currQuestion.category}
-                        difficulty={currQuestion.difficulty}
-                        airdate={new Date(currQuestion.airdate)}
-                        favorited={false}
-                    />
-                );
+
+                let favorites = localStorage.getItem("favorites");
+                let favoritesJSON = {
+                    questions: []
+                };
+                if (favorites != null) favoritesJSON = JSON.parse(favorites);
+                let favQuestionList = favoritesJSON.questions;
+
+                let hasAdded = false;
+                for (let i = 0; i < favQuestionList.length; i ++) {
+                    if (favQuestionList[i].question == currQuestion.question) {
+                        this.state.cardList.push(
+                            <ContentCard
+                                question={currQuestion.question}
+                                answer={currQuestion.answer}
+                                category={currQuestion.category}
+                                difficulty={currQuestion.difficulty}
+                                airdate={new Date(currQuestion.airdate)}
+                                favorited={true}
+                            />
+                        );
+                        hasAdded = true;
+                        break;
+                    }
+                }
+                if (!hasAdded) {
+                    this.state.cardList.push(
+                        <ContentCard
+                            question={currQuestion.question}
+                            answer={currQuestion.answer}
+                            category={currQuestion.category}
+                            difficulty={currQuestion.difficulty}
+                            airdate={new Date(currQuestion.airdate)}
+                            favorited={false}
+                        />
+                    );
+                }
             }
             this.state.loading = false;
             this.setState({});
