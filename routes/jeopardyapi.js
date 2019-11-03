@@ -24,7 +24,6 @@ response returned:
     ]
 }
 */
-
 //routing request
 router.get('/:category/:difficulty/:startDate/:endDate', function(req, res, next) {
     let category = req.params.category;

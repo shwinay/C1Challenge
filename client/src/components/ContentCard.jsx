@@ -1,4 +1,5 @@
 import React,  { Component } from 'react';
+import { FaRegStar, FaStar } from 'react-icons/fa';
 
 /*
     Card component that shows a question, answer, airdate, and category/difficulty.
@@ -12,7 +13,14 @@ import React,  { Component } from 'react';
 class ContentCard extends Component {
 
     state = {
-        cardState: "Question" //Question or Answer
+        cardState: "Question", //Question or Answer
+        favorited: false
+    }
+
+    componentDidMount() {
+        this.setState({
+            favorited: this.props.favorited
+        });
     }
 
     render() {
@@ -26,8 +34,16 @@ class ContentCard extends Component {
                         <h6 className="card-subtitle mb-2 text-muted"><b>Difficulty: </b>{(this.props.difficulty != null ? this.props.difficulty : "Not Given")}</h6>
                         <h6 className="card-subtitle mb-2 text-muted"><b>Airdate: </b>{this.dateToString(this.props.airdate)}</h6>
                     <center>
-                        <p clasNames="card-text">{this.getBody()}</p>
-                        <button className="btn btn-primary" onClick={this.buttonClick}>{this.getButtonText()}</button>
+                        <p className="card-text">{this.getBody()}</p>
+                        <div className="row">
+                            <div className="col-2"></div>
+                            <div className="col-8">
+                            <button className="btn btn-primary" onClick={this.buttonClick}>{this.getButtonText()}</button>
+                            </div>
+                            <div className="col-2">
+                            {this.getFavoriteStar()}
+                            </div>
+                        </div>
                     </center>
                 </div>
             </div>
@@ -35,13 +51,82 @@ class ContentCard extends Component {
     }
 
     getTitle() { return this.state.cardState }
+
+    //gets the text of the push button
     getButtonText() { return this.state.cardState == "Question" ? "See Answer" : "See Question"; }
+
+    //gets the question or answer of the card
     getBody() { return this.state.cardState == "Question" ? this.props.question : this.props.answer};
+
+    //changes the state of the card to either question or answer
     buttonClick = () => {
         let newState = this.state.cardState == "Question" ? "Answer" : "Question";
         this.setState({cardState : newState});
     }
 
+    //gets either the clicked or unclicked favorite star
+    getFavoriteStar() {
+        if (this.state.favorited == false) { //set to unfavorited
+            this.unfavoriteLocalStorage();
+            return <button 
+                    class="btn" 
+                    style={{ boxShadow: "none", float: "right"}}
+                    onClick={() => this.setState({favorited: true})}>
+                        <FaRegStar />
+                    </button>;
+        }
+        else { //set to favorited
+            this.favoriteLocalStorage();
+            return <button 
+                    class="btn" 
+                    style={{ boxShadow: "none", float: "right"}}
+                    onClick={() => {this.setState({favorited: false})}}
+                    >
+                        <FaStar style={{color: "gold"}}/>
+                    </button>;
+        }
+    }
+
+    //removes the current card from local storage
+    unfavoriteLocalStorage() {
+
+    }
+
+    //puts the current card in local storage
+    favoriteLocalStorage() {
+        console.log(localStorage);
+        let favorites = localStorage.getItem("favorites");
+        let favoritesJSON = {};
+        if (favorites != null) favoritesJSON = JSON.parse(favorites);
+        console.log(favoritesJSON);
+        // if (favoritesJSON.hasOwnProperty("questions")) {
+        //     let questionList = favoritesJSON.questions;
+        //     questionList.push({
+        //         category: this.props.category,
+        //         difficulty: this.props.difficulty,
+        //         airdate: this.props.airdate,
+        //         answer: this.props.answer,
+        //         question: this.props.question
+        //     });
+        //     favoritesJSON.questions = questionList;
+        //     localStorage.setItem("questions", JSON.stringify(favoritesJSON.questions));
+        // }
+        // else {
+        //     let questionList = [];
+        //     questionList.push({
+        //         category: this.props.category,
+        //         difficulty: this.props.difficulty,
+        //         airdate: this.props.airdate,
+        //         answer: this.props.answer,
+        //         question: this.props.question
+        //     });
+        //     favoritesJSON.questions = questionList;
+        //     localStorage.setItem("favorites", JSON.stringify(favoritesJSON));
+        // }
+        // console.log(localStorage.getItem("favorites"));
+    }
+
+    //converts date to MM/DD/YYYY string
     dateToString(date) {
         let year = date.getFullYear();
         let month = (1 + date.getMonth()).toString().padStart(2, '0');

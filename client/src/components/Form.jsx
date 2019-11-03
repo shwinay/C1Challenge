@@ -3,6 +3,7 @@ import ContentGrid from "./ContentGrid"
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
+//class that displays the search form for the website
 class Form extends Component {
 
     state = {

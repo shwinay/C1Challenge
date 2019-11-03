@@ -31,6 +31,7 @@ class ContentGrid extends Component {
         )
     }
 
+    //handles search onSubmit
     handleSearchSubmit(event) {
         event.preventDefault();
         this.setState({
@@ -40,6 +41,8 @@ class ContentGrid extends Component {
         this.requestCards();
     }
 
+    //makes an API request to the server for cards,
+    //and pushes them to this.state.cardList
     requestCards() {
         let url = "/jservice/" + this.props.category + "/" + this.props.difficulty + "/" + this.dateToString(this.props.startDate) + "/" + this.dateToString(this.props.endDate);
         this.setState({loading: true});
@@ -56,6 +59,7 @@ class ContentGrid extends Component {
                         category={currQuestion.category}
                         difficulty={currQuestion.difficulty}
                         airdate={new Date(currQuestion.airdate)}
+                        favorited={false}
                     />
                 );
             }
@@ -64,6 +68,7 @@ class ContentGrid extends Component {
         });
     }
 
+    //gets the prev, page tiles, and next tiles
     getPrevAndNext() {
 
         if (this.state.cardList.length == 0) return;
@@ -118,6 +123,7 @@ class ContentGrid extends Component {
         );
     }
 
+    //handles onClick for previous arrow
     handlePrev() {
         let newOffset = Math.max(0, this.state.gridOffset - this.state.gridCount);
         this.setState({
@@ -125,6 +131,7 @@ class ContentGrid extends Component {
         });
     }
 
+    //handles onClick for next arrow
     handleNext() {
         let newOffset = Math.min(this.state.cardList.length - this.state.gridCount, this.state.gridOffset + this.state.gridCount);
         this.setState({
@@ -132,12 +139,14 @@ class ContentGrid extends Component {
         });
     }
 
+    //handles onClick for a page tile
     handlePagination(index) {
         this.setState({
             gridOffset : index * this.state.gridCount
         });
     }
 
+    //gets the grid of cards for a current pagination offset, list of filters
     getGrid() {
         if (this.state.loading) return <h1 className="display-4">Loading...</h1>;
 

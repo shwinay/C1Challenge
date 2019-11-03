@@ -8,8 +8,8 @@ class Jumbotron extends Component {
         return (
             <div className="jumbotron jumbotron-fluid" style={{background : "#ecfcff"}}>
                 <div className="container">
-                    <h1 className="display-4">Jeopardy Lookup</h1>
-                    <p className="lead">What is "a website to search questions and answers from your favorite trivia show?"</p>
+                    <h1 className="display-4">{this.props.title}</h1>
+                    <p className="lead">{this.props.subtitle}</p>
                 </div>
             </div>
         )
